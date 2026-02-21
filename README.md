@@ -103,6 +103,52 @@ python3 diskeater.py --flat --flat-top 50
 - macOS (works on Linux too, but disk info display is macOS-optimized)
 - No third-party packages required
 
+## iOS Simulator Cleanup Commands
+
+If DiskEater shows large usage under `~/Library/Developer/CoreSimulator`, these commands can free space and recover a broken simulator device set.
+
+### Safer Cleanup (keep most setup)
+
+```bash
+# Quit Xcode + Simulator first
+xcrun simctl shutdown all
+xcrun simctl delete unavailable
+
+rm -rf ~/Library/Developer/Xcode/DerivedData/*
+rm -rf ~/Library/Developer/Xcode/Archives/*
+rm -rf ~/Library/Developer/Xcode/iOS\ DeviceSupport/*
+rm -rf ~/Library/Logs/CoreSimulator/*
+rm -rf ~/Library/Developer/CoreSimulator/Caches/*
+```
+
+### Reset Broken Simulator Device Set
+
+If you get:
+
+"Use the device manager in Xcode or the simctl command line tool to either delete the device properly or erase contents and settings."
+
+Run:
+
+```bash
+xcrun simctl shutdown all || true
+killall -9 Simulator || true
+killall -9 com.apple.CoreSimulator.CoreSimulatorService || true
+
+rm -rf ~/Library/Developer/CoreSimulator/Devices
+rm -f ~/Library/Developer/CoreSimulator/device_set.plist
+rm -rf ~/Library/Logs/CoreSimulator/*
+
+open -a Xcode
+xcrun simctl list devices
+```
+
+If devices are still missing, run:
+
+```bash
+sudo xcode-select -switch /Applications/Xcode.app
+sudo xcodebuild -runFirstLaunch
+```
+
 ## License
 
 MIT
