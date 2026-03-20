@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-DiskEater - ç
+DiskEater - macOS Disk Space Analyzer
 Scans directories and reports what's consuming your disk space,
 ordered by folders (largest first), then files within each folder.
 """
